@@ -17,29 +17,41 @@ class Example extends React.Component {
   }
 // Teach Autosuggest how to calculate suggestions for any given input value.
   getSuggestions = async value => {
-    const suggestionRes = await fetch('http://localhost:3001/search_reddit_names', {
+    try {
+      const suggestionRes = await fetch(
+        'http://localhost:3001/search_reddit_names', {
           method: 'POST',
           mode: 'cors',
           headers:{
-              // 'Access-Control-Allow-Origin': '*',
-              'Accept': '*/*',
-              'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+            // 'Access-Control-Allow-Origin': '*',
+            'Accept': '*/*',
+            'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
           },
           body: `query=${value}`
-      })
-      .then((response) => response.json())
+        }
+      ).then((response) => response.json())
       .then((responseJson) => {
         return responseJson.names;
-      })
-      .catch((error) => {
-      console.error(error);
       });
-    const inputValue = value.trim().toLowerCase();
-    const inputLength = inputValue.length;
-    
-    inputLength === 0 ? this.setState({suggestions: []}) : this.setState({suggestions: suggestionRes});
+      const inputValue = value.trim().toLowerCase();
+      const inputLength = inputValue.length;
+      inputLength === 0 ? this.setState({suggestions: []}) : this.setState({suggestions: suggestionRes});
+    }
+    catch (error) {
+      console.error(error);
+    }
   };
-
+  fetchSubReddit = async newValue => {
+    try {
+      const subredditData = await fetch (
+        `http://localhost:3001/${newValue}`
+      )
+      console.log(subredditData);
+    }
+    catch (error) {
+      console.error(error)
+    }
+  }
   // When suggestion is clicked, Autosuggest needs to populate the input element
   // based on the clicked suggestion. Teach Autosuggest how to calculate the
   // input value for every given suggestion.
@@ -47,14 +59,27 @@ class Example extends React.Component {
 
   // Use your imagination to render suggestions.
   renderSuggestion = suggestion => (
-    <span className="reddit-search">
+    <span>
       {suggestion}
     </span>
   );
-  onChange = (event, { newValue }) => {
+  onChange = (event, { newValue, method }) => {
+    // console.log(this.fetchSubReddit(newValue));
+    method === 'click' ? this.fetchSubReddit(newValue) : null
     this.setState({
       value: newValue
     });
+  };
+
+  onKeyPress = (event) => {
+    console.log(event.key)
+    event.key === 'Enter' ? this.fetchSubReddit(this.state.value) : null
+    // console.log(value)
+    // method === 'click' ? this.fetchSubReddit(newValue) : null
+    // // console.log(this.fetchSubReddit(newValue));
+    // this.setState({
+    //   value: newValue
+    // });
   };
 
   // Autosuggest will call this function every time you need to update suggestions.
@@ -77,7 +102,8 @@ class Example extends React.Component {
     const inputProps = {
       placeholder: 'Type a programming language',
       value,
-      onChange: this.onChange
+      onChange: this.onChange,
+      onKeyPress: this.onKeyPress
     };
 
     // Finally, render it!
