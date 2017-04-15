@@ -2,8 +2,8 @@ import Autosuggest from 'react-autosuggest';
 import React from 'react';
 
 class Example extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     // Autosuggest is a controlled component.
     // This means that you need to provide an input value
@@ -12,9 +12,11 @@ class Example extends React.Component {
     // and they are initially empty because the Autosuggest is closed.
     this.state = {
       value: '',
-      suggestions: []
+      suggestions: [],
+      posts: []
     };
   }
+
 // Teach Autosuggest how to calculate suggestions for any given input value.
   getSuggestions = async value => {
     try {
@@ -41,17 +43,6 @@ class Example extends React.Component {
       console.error(error);
     }
   };
-  fetchSubReddit = async newValue => {
-    try {
-      const subredditData = await fetch (
-        `http://localhost:3001/${newValue}`
-      )
-      console.log(subredditData);
-    }
-    catch (error) {
-      console.error(error)
-    }
-  }
   // When suggestion is clicked, Autosuggest needs to populate the input element
   // based on the clicked suggestion. Teach Autosuggest how to calculate the
   // input value for every given suggestion.
@@ -64,19 +55,20 @@ class Example extends React.Component {
     </span>
   );
   onChange = (event, { newValue, method }) => {
-    // console.log(this.fetchSubReddit(newValue));
-    method === 'click' ? this.fetchSubReddit(newValue) : null
+    // console.log(method)
+    // console.log(this.props.fetchSubReddit(newValue));
+    method === 'click' ? this.props.fetchSubReddit(newValue) : null
     this.setState({
       value: newValue
     });
   };
 
   onKeyPress = (event) => {
-    console.log(event.key)
-    event.key === 'Enter' ? this.fetchSubReddit(this.state.value) : null
+    // console.log(event.key)
+    event.key === 'Enter' ? this.props.fetchSubReddit(this.state.value) : null
     // console.log(value)
-    // method === 'click' ? this.fetchSubReddit(newValue) : null
-    // // console.log(this.fetchSubReddit(newValue));
+    // method === 'click' ? this.props.fetchSubReddit(newValue) : null
+    // // console.log(this.props.fetchSubReddit(newValue));
     // this.setState({
     //   value: newValue
     // });
