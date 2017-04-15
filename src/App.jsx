@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Example from './ExampleAuto'
+import RedditPosts from './RedditPosts'
 
 class App extends Component {
   constructor(props) {
@@ -9,12 +10,14 @@ class App extends Component {
 
     this.state = {
       value: '',
-      redditPosts: []
+      redditPosts: [],
+      comments: []
     };    
   }
+
   fetchSubReddit = async newValue => {
     try {
-      const subredditData = await fetch (
+      await fetch (
         `http://localhost:3001/${newValue}`
       ).then(response => response.json())
       .then(responseJson=> {
@@ -26,7 +29,24 @@ class App extends Component {
       console.error(error)
     }
   }
+
+  fetchComments = async permalink => {
+    try {
+      await fetch (
+        `http://localhost:3001/post/${permalink}`
+      ).then(response => response.json())
+      .then(responseJson=> {
+        console.log(responseJson)
+        this.setState({comments: responseJson})
+      })
+    }
+    catch (error) {
+      console.error(error)
+    }
+  }
+
   render() {
+    const { redditPosts } = this.state;
     return (
       <div className="App">
         <div className="App-header">
@@ -39,24 +59,7 @@ class App extends Component {
               fetchSubReddit={this.fetchSubReddit}
             />
           </div>
-          <div className="reddit-posts">
-            {this.state.redditPosts
-              .map(rp => {
-                const { id, created, title, thumbnail, permalink, score, num_comments } = rp.data
-                return (
-                  <div className="card" key={id}>
-                    <img src={thumbnail} width="100"/>
-                    <h6><a href={permalink}>{title}</a></h6>
-                    <ul>
-                      <li>posted: {created}</li>
-                      <li>score: {score}</li>
-                      <li>comments: {num_comments}</li>
-                    </ul>
-                  </div>
-                )
-              })
-            }
-          </div>
+          <RedditPosts redditPosts={redditPosts}/>
         </div>
       </div>
     );
