@@ -47,9 +47,9 @@ class Example extends React.Component {
 
   // Use your imagination to render suggestions.
   renderSuggestion = suggestion => (
-    <div>
+    <span className="reddit-search">
       {suggestion}
-    </div>
+    </span>
   );
   onChange = (event, { newValue }) => {
     this.setState({
