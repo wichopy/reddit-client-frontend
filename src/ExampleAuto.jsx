@@ -1,38 +1,5 @@
 import Autosuggest from 'react-autosuggest';
 import React from 'react';
-// Imagine you have a list of languages that you'd like to autosuggest.
-const languages = [
-  {
-    name: 'C',
-    year: 1972
-  },
-  {
-    name: 'Elm',
-    year: 2012
-  },
-];
-
-// Teach Autosuggest how to calculate suggestions for any given input value.
-const getSuggestions = value => {
-  const inputValue = value.trim().toLowerCase();
-  const inputLength = inputValue.length;
-
-  return inputLength === 0 ? [] : languages.filter(lang =>
-    lang.name.toLowerCase().slice(0, inputLength) === inputValue
-  );
-};
-
-// When suggestion is clicked, Autosuggest needs to populate the input element
-// based on the clicked suggestion. Teach Autosuggest how to calculate the
-// input value for every given suggestion.
-const getSuggestionValue = suggestion => suggestion.name;
-
-// Use your imagination to render suggestions.
-const renderSuggestion = suggestion => (
-  <div>
-    {suggestion.name}
-  </div>
-);
 
 class Example extends React.Component {
   constructor() {
@@ -48,7 +15,42 @@ class Example extends React.Component {
       suggestions: []
     };
   }
+// Teach Autosuggest how to calculate suggestions for any given input value.
+  getSuggestions = async value => {
+    const suggestionRes = await fetch('http://localhost:3001/search_reddit_names', {
+          method: 'POST',
+          mode: 'cors',
+          headers:{
+              // 'Access-Control-Allow-Origin': '*',
+              'Accept': '*/*',
+              'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+          },
+          body: `query=${value}`
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        return responseJson.names;
+      })
+      .catch((error) => {
+      console.error(error);
+      });
+    const inputValue = value.trim().toLowerCase();
+    const inputLength = inputValue.length;
+    
+    inputLength === 0 ? this.setState({suggestions: []}) : this.setState({suggestions: suggestionRes});
+  };
 
+  // When suggestion is clicked, Autosuggest needs to populate the input element
+  // based on the clicked suggestion. Teach Autosuggest how to calculate the
+  // input value for every given suggestion.
+  getSuggestionValue = suggestion => suggestion;
+
+  // Use your imagination to render suggestions.
+  renderSuggestion = suggestion => (
+    <div>
+      {suggestion}
+    </div>
+  );
   onChange = (event, { newValue }) => {
     this.setState({
       value: newValue
@@ -58,25 +60,7 @@ class Example extends React.Component {
   // Autosuggest will call this function every time you need to update suggestions.
   // You already implemented this logic above, so just use it.
   onSuggestionsFetchRequested = ({ value }) => {
-    fetch('http://localhost:3001/search_reddit_names', {
-        method: 'POST',
-        header:{
-            'Access-Control-Allow-Origin':'*'
-        },
-        body: JSON.stringify({
-            query: value
-        })
-    })
-    .then((response) => response.json())
-    .then((responseJson) => {
-    return responseJson.movies;
-    })
-    .catch((error) => {
-    console.error(error);
-    });
-    this.setState({
-      suggestions: getSuggestions(value)
-    });
+    this.getSuggestions(value)
   };
 
   // Autosuggest will call this function every time you need to clear suggestions.
@@ -102,8 +86,8 @@ class Example extends React.Component {
         suggestions={suggestions}
         onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
         onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-        getSuggestionValue={getSuggestionValue}
-        renderSuggestion={renderSuggestion}
+        getSuggestionValue={this.getSuggestionValue}
+        renderSuggestion={this.renderSuggestion}
         inputProps={inputProps}
       />
     );
