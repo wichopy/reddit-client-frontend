@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 import Example from './ExampleAuto'
 import RedditPosts from './RedditPosts'
@@ -10,8 +10,12 @@ class App extends Component {
 
     this.state = {
       value: '',
+      currentSubreddit: '',
       redditPosts: [],
-      comments: []
+      comments: [],
+      nextCode: '',
+      beforeCode: '',
+      header: ''
     };    
   }
 
@@ -22,8 +26,21 @@ class App extends Component {
       ).then(response => response.json())
       .then(responseJson=> {
         console.log(responseJson)
-        this.setState({redditPosts: responseJson.data.children})
+        this.setState({redditPosts: responseJson.sr.data.children})
+        this.setState({header: responseJson.srInfo.data.header_img})
+        this.setState({currentSubreddit: newValue})
       })
+    }
+    catch (error) {
+      console.error(error)
+    }
+  }
+
+  fetchNextPage = async (value,after) => {
+    try {
+      await fetch (
+        `http://localhost:3001/${value}?after=${after}`
+      )
     }
     catch (error) {
       console.error(error)
@@ -46,21 +63,22 @@ class App extends Component {
   }
 
   render() {
-    const { redditPosts } = this.state;
+    const { redditPosts, currentSubreddit, header } = this.state;
     return (
       <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React Reddit</h2>
-        </div>
-        <div className="container-fluid">
+        <div className="jumbotron">
+          {currentSubreddit ? <h1>{currentSubreddit}</h1> : <h1>Find your subreddit!</h1>}
+          {header ? <img src={header} /> : null }
           <div className="reddit-search">
             SEARCH: <Example
               fetchSubReddit={this.fetchSubReddit}
             />
           </div>
+        </div>
+        <div className="container-fluid">
           <RedditPosts redditPosts={redditPosts}/>
         </div>
+        {redditPosts.length > 0 ? <span><button>prev</button><button onClick={this.fetchNextPage}>next</button></span> : null}
       </div>
     );
   }
