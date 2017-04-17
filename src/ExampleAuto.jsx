@@ -55,9 +55,9 @@ class Example extends React.Component {
     </span>
   );
   onChange = (event, { newValue, method }) => {
-    // console.log(method)
+    console.log(method)
     // console.log(this.props.fetchSubReddit(newValue));
-    method === 'click' ? this.props.fetchSubReddit(newValue) : null
+    method === ('click' || 'enter' ) ? this.props.fetchSubReddit(newValue) : null
     this.setState({
       value: newValue
     });
@@ -92,7 +92,7 @@ class Example extends React.Component {
 
     // Autosuggest will pass through all these props to the input element.
     const inputProps = {
-      placeholder: 'Type a programming language',
+      placeholder: 'Search for your subreddit',
       value,
       onChange: this.onChange,
       onKeyPress: this.onKeyPress

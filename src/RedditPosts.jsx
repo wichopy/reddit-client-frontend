@@ -1,7 +1,6 @@
 import React from 'react';
 
 const RedditPosts = props => {
-    console.log(props)
     return (
         <div className="reddit-posts">
             {props.redditPosts
