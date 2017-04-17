@@ -11,11 +11,13 @@ const RedditPosts = props => {
                         <div key={id}>
                             <div className=" card " >
                                 <div className="row">
-                                    <div className = "col-md-3">
-                                        <a href={url} target="_blank"><img src={thumbnail} className="thumbnail" data-toggle="tooltip" title="Click me to open content in a new tab"/></a>
+                                    <div className="col-md-3">
+                                        {thumbnail ? 
+                                        <a href={url} target="_blank"><img src={thumbnail} alt="thumbnail" className="thumbnail" data-toggle="tooltip" title="Click me to open content in a new tab"/></a>
+                                        : null }
                                     </div>
-                                    <div className = "col-md-9">
-                                        <a onClick={()=> props.fetchComments(permalink) } data-toggle="modal" data-target="#postContent"><h4 className="card-title"><b>{title}</b></h4></a>
+                                    <div className="col-md-9">
+                                        <a onClick={()=> props.fetchComments(permalink) } href="!#" data-toggle="modal" data-target="#postContent"><h4 className="card-title"><b>{title}</b></h4></a>
                                         <h3 className="card-text">score: {score}</h3>
                                         <p className="card-text">comments: {num_comments}</p>
                                         <p className="card-text">posted: {dateString}</p>

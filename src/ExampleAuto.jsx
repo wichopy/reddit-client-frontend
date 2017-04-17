@@ -57,10 +57,10 @@ class Example extends React.Component {
   onChange = (event, { newValue, method }) => {
     console.log(method)
     // console.log(this.props.fetchSubReddit(newValue));
-    method === ('click' || 'enter' ) ? this.props.fetchSubReddit(newValue) : null
     this.setState({
       value: newValue
     });
+    method === ('click' || 'enter' ) ? this.props.fetchSubReddit(newValue) : null
   };
 
   onKeyPress = (event) => {
