@@ -13,6 +13,7 @@ class App extends Component {
       currentSubreddit: '',
       redditPosts: [],
       comments: [],
+      currentPost: [],
       nextCode: '',
       beforeCode: '',
       header: '',
@@ -72,12 +73,23 @@ class App extends Component {
 
   fetchComments = async permalink => {
     try {
+      console.log(permalink)
       await fetch (
-        `http://localhost:3001/post/${permalink}`
+        'http://localhost:3001/posts', {
+          method: 'POST',
+          mode: 'cors',
+          headers:{
+            // 'Access-Control-Allow-Origin': '*',
+            'Accept': '*/*',
+            'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+          },
+          body: `permalink=${permalink}`
+        }
       ).then(response => response.json())
       .then(responseJson=> {
         console.log(responseJson)
-        this.setState({comments: responseJson})
+        this.setState({comments: responseJson[1].data.children})
+        this.setState({currentPost: responseJson[0].data.children[0].data})
       })
     }
     catch (error) {
@@ -86,21 +98,46 @@ class App extends Component {
   }
 
   render() {
-    const { redditPosts, currentSubreddit, header, subredditNull }  = this.state;
+    const { redditPosts, currentSubreddit, header, subredditNull, comments }  = this.state;
+    const {title, url} = this.state.currentPost
     return (
       <div className="App">
         <div className="jumbotron">
-          {currentSubreddit ? <h1>{currentSubreddit}</h1> : <h1>Find your subreddit!</h1>}
+          {currentSubreddit ? <h1 className="title-subreddit">/r/{currentSubreddit}</h1> : <h1>Find your subreddit!</h1>}
           {header ? <img src={header} /> : null }
           <div className="reddit-search">
             SEARCH: <Example
               fetchSubReddit={this.fetchSubReddit}
             />
           </div>
+          <div className="modal fade" id="postContent" tabindex="-1" role="dialog" aria-labelledby="modalLongTitle" aria-hidden="true">
+            <div className="modal-dialog modal-lg" role="document">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title" id="modalLongTitle">{title}</h5>
+                  <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div className="modal-body">
+                  <img src={url} />
+                  
+                  some text here
+                </div>
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" className="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div className="container-fluid">
           {subredditNull === 0 ? "WHOOPS, THAT REDDIT DONT EXIT" : null}
-          <RedditPosts redditPosts={redditPosts}/>
+          <RedditPosts 
+            redditPosts={redditPosts}
+            fetchComments={this.fetchComments}
+          />
         </div>
         {redditPosts.length > 0 ? 
             <button onClick={this.fetchNextPage}>Load More</button>

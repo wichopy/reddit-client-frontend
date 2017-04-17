@@ -5,23 +5,28 @@ const RedditPosts = props => {
         <div className="reddit-posts">
             {props.redditPosts
                 .map(rp => {
-                const { id, created, title, thumbnail, permalink, score, num_comments } = rp.data
-                const dateString = new Date(created).toString()
-                return (
-                    <div className="container-fluid card" key={id}>
-                        <div className="row">
-                            <div className="col-sm-3">
-                                <img src={thumbnail} />
+                    const { id, created, title, thumbnail, permalink, score, num_comments, url } = rp.data
+                    const dateString = new Date(created).toString()
+                    return (
+                        <div key={id}>
+                            <div className=" card " >
+                                <div className="row">
+                                    <div className = "col-md-3">
+                                        <a href={url} target="_blank"><img src={thumbnail} className="thumbnail" data-toggle="tooltip" title="Click me to open content in a new tab"/></a>
+                                    </div>
+                                    <div className = "col-md-9">
+                                        <a onClick={()=> props.fetchComments(permalink) } data-toggle="modal" data-target="#postContent"><h4 className="card-title"><b>{title}</b></h4></a>
+                                        <h3 className="card-text">score: {score}</h3>
+                                        <p className="card-text">comments: {num_comments}</p>
+                                        <p className="card-text">posted: {dateString}</p>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="col-sm-9">
-                                <h6><a><b>{title}</b></a></h6>
-                                    posted: {dateString}
-                                    <h3>score: {score}</h3>
-                                    comments: {num_comments}
+                            <div className="row">
+                                <div className="col-xs-12 whitespace-baby" ></div>
                             </div>
                         </div>
-                    </div>
-                )
+                    )
                 })
             }
         </div>

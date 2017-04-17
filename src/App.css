@@ -7,9 +7,21 @@
     height: 80px;
 }
 
-.card {
-    margin: .5em;
-    padding: .5em;
+.title-subreddit {
+    font-size: 100px;
+}
+
+.whitespace-baby {
+    height: 10px;
+}
+
+.thumbnail {
+    border-radius: 15px;
+    margin: .3em;
+}
+
+.thumbnail:hover {
+    opacity: .6;
 }
 
 .App-header {
