@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import logo from './logo.svg';
 import './App.css';
-import Example from './ExampleAuto'
+import AutoSuggestion from './AutoSuggestion'
 import RedditPosts from './RedditPosts'
 
 import Post from './Post'
@@ -9,7 +9,6 @@ import Post from './Post'
 class App extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       value: '',
       currentSubreddit: '',
@@ -37,7 +36,7 @@ class App extends Component {
         this.setState({value: display_name})
         this.setState({nextCode: after })
         this.setState({beforeCode: before })
-        this.setState({header: responseJson.srInfo.data.header_img})
+        this.setState({header: header_img})
         this.setState({currentSubreddit: newValue})
         this.setState({pageNum: 1})
       })
@@ -96,10 +95,14 @@ class App extends Component {
     return (
       <div className="App">
         <div className="jumbotron">
-          {currentSubreddit ? <h1 className="title-subreddit">/r/{currentSubreddit}</h1> : <h1>Find your subreddit!</h1>}
-          {header ? <img src={header} alt="header"/> : null }
+          {
+            currentSubreddit ? 
+            <h1 className="title-subreddit">/r/{currentSubreddit}</h1> : 
+            <h1>Find your subreddit!</h1>}
+            {header ? <img src={header} alt="header"/> : null 
+          }
           <div className="reddit-search">
-            SEARCH: <Example
+            SEARCH: <AutoSuggestion
               fetchSubReddit={this.fetchSubReddit}
             />
           </div>
@@ -112,8 +115,9 @@ class App extends Component {
             fetchComments={this.fetchComments}
           />
         </div>
-        {redditPosts.length > 0 ? 
-            <button onClick={this.fetchNextPage}>Load More</button>
+        {
+          redditPosts.length > 0 ? 
+          <button className="btn btn-primary" onClick={this.fetchNextPage}>Load More</button>
           : null
         }
       </div>

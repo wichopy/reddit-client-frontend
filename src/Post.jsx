@@ -4,15 +4,33 @@ const HtmlToReactParser = require('html-to-react').Parser;
 const htmlToReactParser = new HtmlToReactParser();
 
 const Post = (props) => {
-                // {props.url || props.url.slice(-3,-1) === 'jpg' ?
-                // <img src={props.url} className="content-img" alt="postcontent"/> :
-                // null 
-                // }
-                // {props.url || props.url.slice(-4,-1) === 'gifv' ? 
-                //   <video>
-                //     <source src={props.url.replace("gifv","webm")} type="video/webm" />
-                //   </video> : null
-                // }
+  const re = /(?:\.([^.]+))?$/;
+  const ext = re.exec(props.url)[1];
+  const renderMedia = (props,ext) => {
+    switch (ext){
+      case 'jpg':
+        return (<img src={props.url} className="content-img" alt="postcontent"/>);
+      case 'gif':
+        return (<img src={props.url} className="content-img" alt="postcontent"/>);  
+      case 'jpeg':
+        return (<img src={props.url} className="content-img" alt="postcontent"/>);
+      case 'png':
+        return (<img src={props.url} className="content-img" alt="postcontent"/>);
+      case 'gifv':
+        return (
+          <video>
+            <source src={props.url.replace("gifv","webm")} type="video/webm" />
+          </video>
+        )
+      default:
+        return (
+          <a href={props.url} target="_blank">
+          <img src={props.thumbnail} alt="thumbnail" className="thumbnail" 
+          data-toggle="tooltip" title="Click me to open content in a new tab"/></a>
+        );
+    }
+  }
+
   return (
     <div className="modal fade" id="postContent" tabIndex="-1" role="dialog" aria-labelledby="modalLongTitle" aria-hidden="true">
       <div className="modal-dialog modal-lg" role="document">
@@ -24,28 +42,28 @@ const Post = (props) => {
             </button>
           </div>
           <div className="modal-body">
-            {htmlToReactParser.parse(htmlToReactParser.parse(props.selftext_html))}
-            { props.thumbnail !== "self" ? 
-            
-            <div className="post-media">
-              {
-                props.thumbnail !== "self" && props.url 
+            {htmlToReactParser.parse(htmlToReactParser.parse(props.selftext_html))} 
+            { 
+              props.thumbnail !== "self" 
+            ? 
+              <div className="post-media">
+                {
+                  props.thumbnail !== "self" && props.url 
                 ? 
-                <a href={props.url} target="_blank">
-                <img src={props.thumbnail} alt="thumbnail" className="thumbnail" 
-                data-toggle="tooltip" title="Click me to open content in a new tab"/></a>
+                  renderMedia(props,ext)
                 : 
-                <a href={props.url} target="_blank">View post...</a>  
-              }
-            </div>
-            : null }
+                  <a href={props.url} target="_blank">View post...</a>  
+                }
+              </div>
+            : 
+              null
+            }
             {props.comments.map((comment)=> {
               return <Comments comment={comment.data} key={comment.data.id}/>
             })}
           </div>
           <div className="modal-footer">
             <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" className="btn btn-primary">Save changes</button>
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import Autosuggest from 'react-autosuggest';
 import React from 'react';
 
-class Example extends React.Component {
+class AutoSuggestion extends React.Component {
   constructor(props) {
     super(props);
 
@@ -49,29 +49,21 @@ class Example extends React.Component {
   getSuggestionValue = suggestion => suggestion;
 
   // Use your imagination to render suggestions.
-  renderSuggestion = suggestion => (
+  renderSuggestion = (suggestion) => (
     <span>
       {suggestion}
     </span>
   );
+
   onChange = (event, { newValue, method }) => {
-    // console.log(method)
-    // console.log(this.props.fetchSubReddit(newValue));
     this.setState({
       value: newValue
     });
-    method === ('click' || 'enter' ) ? this.props.fetchSubReddit(newValue) : null
+    if (method === ('click' || 'enter' )) { this.props.fetchSubReddit(newValue) }
   };
 
   onKeyPress = (event) => {
-    // console.log(event.key)
-    event.key === 'Enter' ? this.props.fetchSubReddit(this.state.value) : null
-    // console.log(value)
-    // method === 'click' ? this.props.fetchSubReddit(newValue) : null
-    // // console.log(this.props.fetchSubReddit(newValue));
-    // this.setState({
-    //   value: newValue
-    // });
+    if (event.key === 'Enter') { this.props.fetchSubReddit(this.state.value) }
   };
 
   // Autosuggest will call this function every time you need to update suggestions.
@@ -89,13 +81,13 @@ class Example extends React.Component {
 
   render() {
     const { value, suggestions } = this.state;
-
     // Autosuggest will pass through all these props to the input element.
     const inputProps = {
       placeholder: 'Hit enter after selecting subreddit',
       value,
       onChange: this.onChange,
-      onKeyPress: this.onKeyPress
+      onKeyPress: this.onKeyPress,
+
     };
 
     // Finally, render it!
@@ -112,4 +104,4 @@ class Example extends React.Component {
   }
 }
 
-export default Example;
+export default AutoSuggestion;
