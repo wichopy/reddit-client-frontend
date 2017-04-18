@@ -15,10 +15,10 @@ Title of post and post content
 and all comments in whatever manner you may like
 
 ## Approach:
-Initialized app using Facebook's create-react-app cli tool.
-Use fetch calls to backend to update state.
+Initialized app in React using Facebook's create-react-app cli tool.
+Used fetch calls to backend to update state.
 Autocomplete by posting partial search queries to Reddit's search_reddit_names route and using npm library `react-autosuggest`
-Utilized bootstrap collapse for comment tree and 
+Utilized bootstrap collapse for comment tree with a gradient color change for nested replies.
 
 ## Local Installation:
 
