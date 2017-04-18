@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 // import logo from './logo.svg';
 import './App.css';
-import AutoSuggestion from './AutoSuggestion'
-import RedditPosts from './RedditPosts'
-
-import Post from './Post'
+import AutoSuggestion from './Components/AutoSuggestion'
+import RedditPosts from './Components/RedditPosts'
+import Post from './Components/Post'
 
 class App extends Component {
   constructor(props) {

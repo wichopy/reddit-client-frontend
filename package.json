@@ -17,5 +17,25 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
-  }
+  },
+  "description": "Develop a simple Reddit client web UI.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wichopy/reddit-client-frontend.git"
+  },
+  "keywords": [
+    "reddit",
+    "client",
+    "frontend",
+    "ui",
+    "react",
+    "javascript"
+  ],
+  "author": "Will Chou",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wichopy/reddit-client-frontend/issues"
+  },
+  "homepage": "https://github.com/wichopy/reddit-client-frontend#readme"
 }
