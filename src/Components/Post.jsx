@@ -7,6 +7,7 @@ const Post = (props) => {
   const re = /(?:\.([^.]+))?$/;
   const ext = re.exec(props.url)[1];
   const renderMedia = (props,ext) => {
+    //render different media types depending on file extension.
     switch (ext){
       case 'jpg':
         return (<img src={props.url} className="content-img" alt="postcontent"/>);

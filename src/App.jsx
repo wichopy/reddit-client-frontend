@@ -9,15 +9,12 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: '',
       currentSubreddit: '',
       redditPosts: [],
       comments: [],
       currentPost: [],
       nextCode: '',
-      beforeCode: '',
       header: '',
-      pageNum: 0,
       subredditNull: null,
     };    
   }
@@ -28,16 +25,13 @@ class App extends Component {
         `http://localhost:3001/${newValue}`
       ).then(response => response.json())
       .then(responseJson=> {
-        const { children, after, before } = responseJson.sr.data;
+        const { children, after } = responseJson.sr.data;
         const {display_name, header_img }= responseJson.srInfo.data;
         if (children.length === 0 && !after) { this.setState({subredditNull: 0}) } else { this.setState({subredditNull: 1}) }
         this.setState({redditPosts: children})
-        this.setState({value: display_name})
         this.setState({nextCode: after })
-        this.setState({beforeCode: before })
         this.setState({header: header_img})
-        this.setState({currentSubreddit: newValue})
-        this.setState({pageNum: 1})
+        this.setState({currentSubreddit: display_name})
       })
     }
     catch (error) {
@@ -51,12 +45,10 @@ class App extends Component {
         `http://localhost:3001/${this.state.currentSubreddit}/after/${this.state.nextCode}`
       ).then(response => response.json())
       .then(responseJson => {
-        const { children, after, before } = responseJson.sr.data;
-        let { pageNum,redditPosts } = this.state;
+        const { children, after } = responseJson.sr.data;
+        let { redditPosts } = this.state;
         this.setState({nextCode: after })
-        this.setState({beforeCode: before })
         this.setState({redditPosts: redditPosts.concat(children)})
-        this.setState({pageNum: pageNum+=1})
       })
     }
     catch (error) {
