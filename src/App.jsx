@@ -30,12 +30,8 @@ class App extends Component {
         `http://localhost:3001/${newValue}`
       ).then(response => response.json())
       .then(responseJson=> {
-        // console.log(responseJson)
         const { children, after, before } = responseJson.sr.data;
         const {display_name, header_img }= responseJson.srInfo.data;
-        // console.log(responseJson.sr)
-        console.log(responseJson.sr)
-        console.log(`found new subreddit. before code: ${before}, after code: ${after}`)
         if (children.length === 0 && !after) { this.setState({subredditNull: 0}) } else { this.setState({subredditNull: 1}) }
         this.setState({redditPosts: children})
         this.setState({value: display_name})
@@ -53,14 +49,11 @@ class App extends Component {
 
   fetchNextPage = async () => {
     try {
-      console.log('call to next page with after code:',this.state.nextCode)
       await fetch (
         `http://localhost:3001/${this.state.currentSubreddit}/after/${this.state.nextCode}`
       ).then(response => response.json())
       .then(responseJson => {
         const { children, after, before } = responseJson.sr.data;
-        // console.log(responseJson.sr)
-        console.log(`next page pressed. new before code: ${before}, after code: ${after}`)
         let { pageNum,redditPosts } = this.state;
         this.setState({nextCode: after })
         this.setState({beforeCode: before })
@@ -75,7 +68,6 @@ class App extends Component {
 
   fetchComments = async permalink => {
     try {
-      console.log(permalink)
       await fetch (
         'http://localhost:3001/posts', {
           method: 'POST',
@@ -89,7 +81,6 @@ class App extends Component {
         }
       ).then(response => response.json())
       .then(responseJson=> {
-        console.log(responseJson)
         this.setState({comments: responseJson[1].data.children})
         this.setState({currentPost: responseJson[0].data.children[0].data})
       })
@@ -101,8 +92,7 @@ class App extends Component {
 
   render() {
     const { redditPosts, currentSubreddit, header, subredditNull, comments }  = this.state;
-    const {title, url} = this.state.currentPost
-    // console.log(comments)
+    const {title, url, selftext_html, thumbnail } = this.state.currentPost
     return (
       <div className="App">
         <div className="jumbotron">
@@ -114,8 +104,8 @@ class App extends Component {
             />
           </div>
         </div>
-        <Post subreddit={currentSubreddit} title={title} url={url} comments={comments} />
-        <div className="container-fluid">
+        <Post subreddit={currentSubreddit} title={title} url={url} comments={comments} selftext_html={selftext_html} thumbnail={thumbnail} />
+        <div className="container">
           {subredditNull === 0 ? "WHOOPS, THAT REDDIT DONT EXIT" : null}
           <RedditPosts 
             redditPosts={redditPosts}

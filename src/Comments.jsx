@@ -3,10 +3,9 @@ const HtmlToReactParser = require('html-to-react').Parser;
 const htmlToReactParser = new HtmlToReactParser();
 
 const Comments = props => {
-  console.log('replies:',props.comment.replies)
   return (
     <div className="card comment">
-      <p>{htmlToReactParser.parse(htmlToReactParser.parse(props.comment.body_html))}</p>
+      {htmlToReactParser.parse(htmlToReactParser.parse(props.comment.body_html))}
       <span>
         posted by: {props.comment.author} |
           score: <b>{props.comment.score}</b> | <a data-toggle="collapse" data-target={'#'+props.comment.id} href="!#">replies 

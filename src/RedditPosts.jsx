@@ -12,9 +12,9 @@ const RedditPosts = props => {
                             <div className=" card " >
                                 <div className="row">
                                     <div className="col-md-3">
-                                        {thumbnail ? 
+                                        {thumbnail !== "self" ? 
                                         <a href={url} target="_blank"><img src={thumbnail} alt="thumbnail" className="thumbnail" data-toggle="tooltip" title="Click me to open content in a new tab"/></a>
-                                        : null }
+                                        : <a href={url} target="_blank">View post...</a>  }
                                     </div>
                                     <div className="col-md-9">
                                         <a onClick={()=> props.fetchComments(permalink) } href="!#" data-toggle="modal" data-target="#postContent"><h4 className="card-title"><b>{title}</b></h4></a>
