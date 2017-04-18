@@ -14,7 +14,7 @@ Jumbotron displaying the subreddit
 Title of post and post content
 and all comments in whatever manner you may like
 
-##Approach:
+## Approach:
 Initialized app using Facebook's create-react-app cli tool.
 Use fetch calls to backend to update state.
 Autocomplete by posting partial search queries to Reddit's search_reddit_names route and using npm library `react-autosuggest`

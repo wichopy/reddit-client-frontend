@@ -79,7 +79,7 @@ class App extends Component {
       console.error(error)
     }
   }
-
+ 
   render() {
     const { redditPosts, currentSubreddit, header, subredditNull, comments }  = this.state;
     const {title, url, selftext_html, thumbnail } = this.state.currentPost
