@@ -1,41 +1,40 @@
 {
-  "name": "reddit-client-cluep1",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "html-to-react": "^1.2.7",
-    "markdown": "^0.5.0",
-    "react": "^15.5.4",
-    "react-autosuggest": "^9.0.0",
-    "react-dom": "^15.5.4"
-  },
-  "devDependencies": {
-    "react-scripts": "0.9.5"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
-  },
-  "description": "Develop a simple Reddit client web UI.",
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/wichopy/reddit-client-frontend.git"
-  },
-  "keywords": [
-    "reddit",
-    "client",
-    "frontend",
-    "ui",
-    "react",
-    "javascript"
-  ],
-  "author": "Will Chou",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/wichopy/reddit-client-frontend/issues"
-  },
-  "homepage": "https://github.com/wichopy/reddit-client-frontend#readme"
+    "name": "reddit-client-cluep1",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "html-to-react": "^1.2.7",
+        "react": "^15.5.4",
+        "react-autosuggest": "^9.0.0",
+        "react-dom": "^15.5.4"
+    },
+    "devDependencies": {
+        "react-scripts": "0.9.5"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test --env=jsdom",
+        "eject": "react-scripts eject"
+    },
+    "description": "Develop a simple Reddit client web UI.",
+    "main": "index.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/wichopy/reddit-client-frontend.git"
+    },
+    "keywords": [
+        "reddit",
+        "client",
+        "frontend",
+        "ui",
+        "react",
+        "javascript"
+    ],
+    "author": "Will Chou",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/wichopy/reddit-client-frontend/issues"
+    },
+    "homepage": "https://github.com/wichopy/reddit-client-frontend#readme"
 }

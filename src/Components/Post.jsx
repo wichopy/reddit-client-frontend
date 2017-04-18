@@ -59,7 +59,7 @@ const Post = (props) => {
               null
             }
             {props.comments.map((comment)=> {
-              return <Comments comment={comment.data} key={comment.data.id}/>
+              return <Comments comment={comment.data} key={comment.data.id} r={220} g={220} b={220}/>
             })}
           </div>
           <div className="modal-footer">
